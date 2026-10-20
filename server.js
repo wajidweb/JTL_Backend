@@ -22,8 +22,8 @@ async function startServer() {
   await testConnection();
 
   // Start HTTP Listener
-  const server = app.listen(PORT, () => {
-    console.log(`🚀 JTL Server listening on http://localhost:${PORT}`);
+  const server = app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 JTL Server listening on http://0.0.0.0:${PORT}`);
     console.log(`🔐 Admin Login:  http://localhost:${PORT}/api/auth/login`);
     console.log(`👥 Team API:     http://localhost:${PORT}/api/team`);
     console.log(`🖼  Gallery API:  http://localhost:${PORT}/api/gallery`);
