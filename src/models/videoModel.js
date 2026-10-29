@@ -8,7 +8,7 @@ const VideoModel = {
     const sql = `
       CREATE TABLE IF NOT EXISTS \`video_items\` (
         \`id\` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        \`category\` ENUM('Session', 'Family') NOT NULL DEFAULT 'Session',
+        \`category\` ENUM('Session', 'Family', 'Message') NOT NULL DEFAULT 'Session',
         \`title\` VARCHAR(255) NOT NULL,
         \`badge\` VARCHAR(100) NOT NULL DEFAULT '',
         \`description\` TEXT,

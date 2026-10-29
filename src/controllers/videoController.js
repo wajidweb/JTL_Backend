@@ -118,12 +118,19 @@ const VideoController = {
         }
       }
 
+      const validCategories = ["Session", "Family", "Message"];
+      const resolvedCategory = validCategories.includes(category) ? category : "Session";
+
+      let defaultBadge = "Clinical Session";
+      if (resolvedCategory === "Family") defaultBadge = "Family Story";
+      if (resolvedCategory === "Message") defaultBadge = "Message / FYI";
+
       const newVideo = await VideoModel.create({
-        category: category === "Family" ? "Family" : "Session",
+        category: resolvedCategory,
         title: title.trim(),
-        badge: badge ? badge.trim() : (category === "Family" ? "Family Story" : "Clinical Session"),
+        badge: badge ? badge.trim() : defaultBadge,
         description: description ? description.trim() : "",
-        parent_name: category === "Family" && parent_name ? parent_name.trim() : "",
+        parent_name: resolvedCategory === "Family" && parent_name ? parent_name.trim() : "",
         video_type: finalVideoType,
         video_url: finalVideoUrl,
         thumbnail_url: finalThumbnailUrl,
@@ -234,8 +241,15 @@ const VideoController = {
         }
       }
 
+      let updatedCategory = existing.category;
+      if (category !== undefined) {
+        updatedCategory = ["Session", "Family", "Message"].includes(category)
+          ? category
+          : existing.category;
+      }
+
       const updated = await VideoModel.update(id, {
-        category: category !== undefined ? category : existing.category,
+        category: updatedCategory,
         title: title !== undefined ? title.trim() : existing.title,
         badge: badge !== undefined ? badge.trim() : existing.badge,
         description: description !== undefined ? description.trim() : existing.description,
