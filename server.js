@@ -4,7 +4,7 @@ dotenv.config();
 const app = require("./src/app");
 const { testConnection, pool } = require("./src/config/db");
 
-let PORT = Number(process.env.PORT) || 5001;
+let PORT = Number(process.env.PORT) || 3000;
 
 // Port 5000 is occupied by macOS AirPlay (AirTunes). Avoid 403 collision on Mac.
 if (PORT === 5000) {
