@@ -77,14 +77,24 @@ if (process.env.VERCEL) {
   app.use("/uploads", express.static("/tmp/uploads"));
 }
 
-// Welcome / Root Endpoint
+// Welcome / Root Endpoint (Immediate 200 OK for Hostinger/Cloud health checks)
 app.get("/", (req, res) => {
-  res.json({
+  res.status(200).json({
     success: true,
-    message: "Welcome to Journey Towards Life (JTL) Backend API",
-    status: "Running",
+    message: "Journey Towards Life (JTL) Backend API is running!",
+    status: "healthy",
     testUrl: "/api/test",
-    healthUrl: "/api/health",
+    healthUrl: "/health",
+  });
+});
+
+// Direct Health Check Endpoint (returns 200 OK without /api prefix)
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "healthy",
+    service: "Journey Towards Life API",
+    uptime: `${Math.floor(process.uptime())}s`,
+    timestamp: new Date().toISOString(),
   });
 });
 

@@ -18,10 +18,7 @@ async function startServer() {
   console.log("Starting JTL Backend API Server...");
   console.log("==========================================");
 
-  // Test database connection
-  await testConnection();
-
-  // Start HTTP Listener
+  // Start HTTP Listener immediately so Hostinger health checks pass with 0 latency
   const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 JTL Server listening on http://0.0.0.0:${PORT}`);
     console.log(`🔐 Admin Login:  http://localhost:${PORT}/api/auth/login`);
@@ -29,9 +26,16 @@ async function startServer() {
     console.log(`🖼  Gallery API:  http://localhost:${PORT}/api/gallery`);
     console.log(`🎬 Videos API:   http://localhost:${PORT}/api/videos`);
     console.log(`📋 Test API:     http://localhost:${PORT}/api/test`);
-    console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
+    console.log(`📋 Health check: http://localhost:${PORT}/health`);
     console.log("==========================================");
   });
+
+  // Verify database connection asynchronously after server starts listening
+  try {
+    await testConnection();
+  } catch (err) {
+    console.warn("⚠ Database connection warning on boot:", err.message);
+  }
 
   // Graceful Shutdown
   const shutdown = async (signal) => {
